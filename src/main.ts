@@ -9,5 +9,7 @@ async function bootstrap() {
     forbidNonWhitelisted:true, //if get unknown property from dto then it show an error
   }))
   await app.listen(process.env.PORT ?? 3000);
+  app.enableShutdownHooks();
+  
 }
 bootstrap();
