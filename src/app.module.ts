@@ -20,6 +20,7 @@ import { EvController } from './ev/ev.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TeacherModule } from './teacher/teacher.module';
 import { UserModule } from './user/user.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UserModule } from './user/user.module';
     MongooseModule.forRoot(process.env.MONGODB_URI as string),
     TeacherModule,
     UserModule,
+    BlogModule,
   ],
   controllers: [
     AppController,
