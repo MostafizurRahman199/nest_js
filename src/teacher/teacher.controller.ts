@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
 import { TeacherService } from './teacher.service';
 import { Teacher } from './teacher.schema';
@@ -30,6 +30,13 @@ export class TeacherController {
         @Body() data:Partial<Teacher>
     ){
         return this.teacherService.updateTeacher(id,data);
+    }
+
+    @Delete(':id')
+    async deleteTeacher(
+        @Param('id') id:string
+    ){
+        return this.teacherService.deleteTeacher(id);
     }
 
 }

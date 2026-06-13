@@ -27,4 +27,8 @@ export class TeacherService {
     return this.teacherModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }
 
+    async deleteTeacher(id:string):Promise<Teacher | null>{
+        return this.teacherModel.findByIdAndDelete(id).exec();
+    }
+
 }

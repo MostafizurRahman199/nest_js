@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController } from './user/user.controller';
+
 import { ProductService } from './product/product.service';
 import { ProductController } from './product/product.controller';
 import { EmployeeModule } from './employee/employee.module';
@@ -19,6 +19,7 @@ import { EvService } from './ev/ev.service';
 import { EvController } from './ev/ev.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TeacherModule } from './teacher/teacher.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -29,10 +30,10 @@ import { TeacherModule } from './teacher/teacher.module';
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGODB_URI as string),
     TeacherModule,
+    UserModule,
   ],
   controllers: [
     AppController,
-    UserController,
     ProductController,
     MynameController,
     UserRoleController,
