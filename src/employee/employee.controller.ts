@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 
@@ -8,8 +8,11 @@ export class EmployeeController {
     constructor(private readonly employeeService: EmployeeService) {}
 
     @Get()
-    async getEmployee() {
-        const employees = await this.employeeService.getEmployees();
+    async getEmployee(
+        @Query('name') name?: string,
+        @Query('salary') salary?: number,
+    ) {
+        const employees = await this.employeeService.getEmployees(name, salary);
         return {
             statusCode: HttpStatus.OK,
             message: 'Employees fetched successfully',

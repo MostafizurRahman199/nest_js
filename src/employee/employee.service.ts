@@ -17,8 +17,27 @@ export class EmployeeService {
     ){}
 
 
-    async getEmployees(): Promise<Employee[]> {
-        return this.employeeModel.find().populate('profile').exec();
+    async getEmployees(name?: string, salary?: number): Promise<Employee[]> {
+       
+        let profileIds: any[] = [];
+        let isNameSearched = false;
+
+        if (name) {
+            isNameSearched = true;
+            const profiles = await this.profileModel.find(
+                { Name: { $regex: name, $options: 'i' } }).exec();
+            profileIds = profiles.map(p => p._id);
+        }
+
+        const employeeQuery: any = {};
+        if (isNameSearched) {
+            employeeQuery.profile = { $in: profileIds };
+        }
+        if (salary) {
+            employeeQuery.salary = Number(salary);
+        }
+
+        return this.employeeModel.find(employeeQuery).populate('profile').exec();
     }
 
     async createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {

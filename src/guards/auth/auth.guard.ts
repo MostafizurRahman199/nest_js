@@ -1,21 +1,25 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  constructor(private jwtService: JwtService) {}
 
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    
     const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers['authorization'];
-    console.log("Authorization",authHeader);
+    const token = request.cookies?.['jwt'];
 
-    if(authHeader === 'Bearer my-token'){
-      return true;
-    }
-    else{
+    if (!token) {
       throw new UnauthorizedException('You have no permission to access this resource');
+    }
+
+    try {
+      const payload = await this.jwtService.verifyAsync(token);
+      request['user'] = payload;
+      return true;
+    } catch {
+      throw new UnauthorizedException('Invalid or expired token');
     }
   }
 }
