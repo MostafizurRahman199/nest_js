@@ -23,6 +23,10 @@ import { TeacherModule } from './teacher/teacher.module';
 import { UserModule } from './user/user.module';
 import { BlogModule } from './blog/blog.module';
 import { AuthModule } from './auth/auth.module';
+import { BookModule } from './book/book.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -31,6 +35,13 @@ import { AuthModule } from './auth/auth.module';
     StudentModule,
     CustomerModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+      playground:true,
+      
+    }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -45,6 +56,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     BlogModule,
     AuthModule,
+    BookModule,
   ],
   controllers: [
     AppController,
